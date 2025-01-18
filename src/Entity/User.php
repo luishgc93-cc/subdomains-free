@@ -42,6 +42,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    #[ORM\Column]
+    private ?bool $isPremium = null;
+
     public function __construct()
     {
         $this->subdomains = new ArrayCollection();
@@ -156,6 +159,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $subdomain->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isPremium(): ?bool
+    {
+        return $this->isPremium;
+    }
+
+    public function setIsPremium(bool $isPremium): static
+    {
+        $this->isPremium = $isPremium;
 
         return $this;
     }
