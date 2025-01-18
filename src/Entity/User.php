@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -22,6 +24,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subdomain::class, cascade: ['persist', 'remove'])]
+    private Collection $subdomains;
+
     /**
      * @var list<string> The user roles
      */
@@ -36,6 +41,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    public function __construct()
+    {
+        $this->subdomains = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +130,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getSubdomains(): Collection
+    {
+        return $this->subdomains;
+    }
+
+    public function addSubdomain(Subdomain $subdomain): static
+    {
+        if (!$this->subdomains->contains($subdomain)) {
+            $this->subdomains->add($subdomain);
+            $subdomain->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubdomain(Subdomain $subdomain): static
+    {
+        if ($this->subdomains->removeElement($subdomain)) {
+            if ($subdomain->getUser() === $this) {
+                $subdomain->setUser(null);
+            }
+        }
 
         return $this;
     }

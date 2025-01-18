@@ -35,6 +35,10 @@ class Subdomain
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'subdomains')]
+    #[ORM\JoinColumn(nullable: false)] // Define si la relación es obligatoria (puedes cambiar `nullable` a `true` si no es obligatorio)
+    private ?User $user = null;
+    
     #[ORM\Column]
     private ?bool $IsActive = null;
 
@@ -150,6 +154,18 @@ class Subdomain
     public function setNotes(?string $notes): static
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
