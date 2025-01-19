@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SubdomainRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,18 +19,6 @@ class Subdomain
     #[ORM\Column(length: 40)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 40)]
-    private ?string $record = null;
-
-    #[ORM\Column(length: 500)]
-    private ?string $value = null;
-
-    #[ORM\Column]
-    private ?int $ttl = null;
-
-    #[ORM\Column]
-    private ?int $priority = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -36,14 +26,22 @@ class Subdomain
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'subdomains')]
-    #[ORM\JoinColumn(nullable: false)] // Define si la relación es obligatoria (puedes cambiar `nullable` a `true` si no es obligatorio)
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-    
+
     #[ORM\Column]
     private ?bool $IsActive = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $notes = null;
+
+    #[ORM\OneToMany(targetEntity: SubdomainRecord::class, mappedBy: 'subdomain', cascade: ['persist', 'remove'])]
+    private Collection $records;
+
+    public function __construct()
+    {
+        $this->records = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -58,54 +56,6 @@ class Subdomain
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getRecord(): ?string
-    {
-        return $this->record;
-    }
-
-    public function setRecord(string $record): static
-    {
-        $this->record = $record;
-
-        return $this;
-    }
-
-    public function getValue(): ?string
-    {
-        return $this->value;
-    }
-
-    public function setValue(string $value): static
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    public function getTtl(): ?int
-    {
-        return $this->ttl;
-    }
-
-    public function setTtl(int $ttl): static
-    {
-        $this->ttl = $ttl;
-
-        return $this;
-    }
-
-    public function getPriority(): ?int
-    {
-        return $this->priority;
-    }
-
-    public function setPriority(int $priority): static
-    {
-        $this->priority = $priority;
 
         return $this;
     }
@@ -166,6 +116,32 @@ class Subdomain
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getRecords(): Collection
+    {
+        return $this->records;
+    }
+
+    public function addRecord(SubdomainRecord $record): static
+    {
+        if (!$this->records->contains($record)) {
+            $this->records->add($record);
+            $record->setSubdomain($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecord(SubdomainRecord $record): static
+    {
+        if ($this->records->removeElement($record)) {
+            if ($record->getSubdomain() === $this) {
+                $record->setSubdomain(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,5 @@
+front.v1.add.record.to.subdomain:
+  path: /crear-registro/{idSubdominio}
+  controller: App\Controller\RecordsOfSubdomain::addRecord
+
+ 

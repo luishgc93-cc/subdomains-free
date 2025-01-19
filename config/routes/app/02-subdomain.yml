@@ -1,3 +1,0 @@
-front.v1.add.subdomain:
-  path: /crear-subdominio
-  controller: App\Controller\SubdomainController::addSubdomain

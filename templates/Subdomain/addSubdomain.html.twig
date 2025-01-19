@@ -3,15 +3,37 @@
 {% block title %}Añadir subdominio{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+<h1>Create Subdomain</h1>
 
-    <h1>Añadir subdominio</h1>
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.isActive) }}
+    {{ form_row(form.notes) }}
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary">Save</button>
-    {{ form_end(form) }}
-    
+    <h2>Records</h2>
+    <div id="records-collection">
+        {{ form_row(form.records) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+{{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const recordsCollection = document.querySelector('#records-collection');
+        const addButton = document.createElement('button');
+        addButton.textContent = 'Add Record';
+        addButton.type = 'button';
+        recordsCollection.appendChild(addButton);
+
+        addButton.addEventListener('click', () => {
+            const prototype = recordsCollection.dataset.prototype;
+            const index = recordsCollection.dataset.index || recordsCollection.children.length;
+            const newForm = prototype.replace(/__name__/g, index);
+            recordsCollection.insertAdjacentHTML('beforeend', newForm);
+            recordsCollection.dataset.index = parseInt(index) + 1;
+        });
+    });
+</script>
 {% endblock %}
+
