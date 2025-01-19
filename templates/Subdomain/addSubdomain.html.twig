@@ -3,37 +3,15 @@
 {% block title %}Añadir subdominio{% endblock %}
 
 {% block body %}
-<h1>Create Subdomain</h1>
+<h1>Añadir Subdomain</h1>
 
 {{ form_start(form) }}
+    {{ form_row(form.domain) }} 
     {{ form_row(form.name) }}
     {{ form_row(form.isActive) }}
     {{ form_row(form.notes) }}
-
-    <h2>Records</h2>
-    <div id="records-collection">
-        {{ form_row(form.records) }}
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Añadir</button>
 {{ form_end(form) }}
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const recordsCollection = document.querySelector('#records-collection');
-        const addButton = document.createElement('button');
-        addButton.textContent = 'Add Record';
-        addButton.type = 'button';
-        recordsCollection.appendChild(addButton);
-
-        addButton.addEventListener('click', () => {
-            const prototype = recordsCollection.dataset.prototype;
-            const index = recordsCollection.dataset.index || recordsCollection.children.length;
-            const newForm = prototype.replace(/__name__/g, index);
-            recordsCollection.insertAdjacentHTML('beforeend', newForm);
-            recordsCollection.dataset.index = parseInt(index) + 1;
-        });
-    });
-</script>
 {% endblock %}
 

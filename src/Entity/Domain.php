@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\DomainRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
 class Domain
@@ -27,6 +29,14 @@ class Domain
 
     #[ORM\Column]
     private ?bool $isPremium = null;
+
+    #[ORM\OneToMany(mappedBy: 'domain', targetEntity: Subdomain::class)]
+    private Collection $subdomains;
+
+    public function __construct()
+    {
+        $this->subdomains = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,5 +101,10 @@ class Domain
         $this->isPremium = $isPremium;
 
         return $this;
+    }
+
+    public function getSubdomains(): Collection
+    {
+        return $this->subdomains;
     }
 }

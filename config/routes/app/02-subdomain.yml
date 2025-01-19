@@ -2,6 +2,6 @@ front.v1.add.subdomain:
   path: /crear-subdominio
   controller: App\Controller\SubdomainController::addSubdomain
 
-front.v1.add.records.on.subdomain:
-  path: /editar-subdominio/{id}
+front.v1.edit.records.on.subdomain:
+  path: /editar-subdominio/{idSubdominio}
   controller: App\Controller\SubdomainController::editSubdomain

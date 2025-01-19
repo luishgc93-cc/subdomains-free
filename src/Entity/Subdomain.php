@@ -38,6 +38,10 @@ class Subdomain
     #[ORM\OneToMany(targetEntity: SubdomainRecord::class, mappedBy: 'subdomain', cascade: ['persist', 'remove'])]
     private Collection $records;
 
+    #[ORM\ManyToOne(targetEntity: Domain::class, inversedBy: 'subdomains')]
+    #[ORM\JoinColumn(nullable: false)] 
+    private ?Domain $domain = null;
+
     public function __construct()
     {
         $this->records = new ArrayCollection();
@@ -142,6 +146,18 @@ class Subdomain
                 $record->setSubdomain(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDomain(): ?Domain
+    {
+        return $this->domain;
+    }
+
+    public function setDomain(?Domain $domain): static
+    {
+        $this->domain = $domain;
 
         return $this;
     }

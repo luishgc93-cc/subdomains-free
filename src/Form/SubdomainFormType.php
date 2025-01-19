@@ -1,16 +1,14 @@
 <?php
-
+// src/Form/SubdomainFormType.php
 namespace App\Form;
 
 use App\Entity\Subdomain;
-use App\Form\SubdomainRecordFormType;
+use App\Entity\Domain;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType; 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,6 +29,12 @@ class SubdomainFormType extends AbstractType
                 'label' => 'Notes',
                 'required' => false,
                 'attr' => ['maxlength' => 255],
+            ])
+            ->add('domain', EntityType::class, [
+                'class' => Domain::class,  
+                'choice_label' => 'name',
+                'label' => 'Select Domain',
+                'required' => true,
             ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Domain;
 use App\Entity\Subdomain;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,23 +20,24 @@ final class SubdomainController extends AbstractController
     public function addSubdomain(Request $request, EntityManagerInterface $entityManager,  Security $security): Response
     {
         $subdomain = new Subdomain();
-        $subdomain->setCreatedAt(new \DateTimeImmutable());  
+
         $form = $this->createForm(SubdomainFormType::class, $subdomain);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) { 
-            $user = $security->getUser();  
-            $subdomain->setUser($user);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $subdomain = $form->getData(); 
+            $subdomain->setUser($security->getUser());
+            $subdomain->setCreatedAt(new \DateTime());
             $entityManager->persist($subdomain);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Subdomain created successfully!');
+            $this->addFlash('success', 'Subdomain created successfully.');
 
-            return $this->redirectToRoute('front.v1.add.subdomain');  
+            return $this->redirectToRoute('subdomain_list');
         }
 
-        return $this->render('subdomain/addSubdomain.html.twig', [
+        return $this->render('Subdomain/addSubdomain.html.twig', [
             'form' => $form->createView(),
         ]);
     }
