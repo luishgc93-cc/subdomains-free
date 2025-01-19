@@ -25,7 +25,7 @@ final class RegistrationController extends AbstractController
         ){
     }
 
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function registerUser(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -36,7 +36,7 @@ final class RegistrationController extends AbstractController
             $plainPassword = $form->get('plainPassword')->getData();
 
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-
+            $user->setIsPremium(false);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -53,9 +53,8 @@ final class RegistrationController extends AbstractController
         }
 
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('User/Registration/register.html.twig', [
             'registrationForm' => $form,
-            'content' => ' '
         ]);
     }
 

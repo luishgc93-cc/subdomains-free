@@ -1,3 +1,11 @@
 front.v1.user.register:
-  path: /register.html
-  controller: App\Controller\RegistrationController::register
+  path: /registro
+  controller: App\Controller\RegistrationController::registerUser
+
+front.v1.user.login.user:
+  path: /acceder
+  controller: App\Controller\LoginControllerController::loginUser
+
+front.v1.user.logout:
+  path: /logout
+  controller: App\Controller\LoginControllerController::logout
