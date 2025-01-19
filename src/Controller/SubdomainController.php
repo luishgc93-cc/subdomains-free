@@ -29,6 +29,7 @@ final class SubdomainController extends AbstractController
             $subdomain = $form->getData(); 
             $subdomain->setUser($security->getUser());
             $subdomain->setCreatedAt(new \DateTime());
+            $subdomain->setIsActive(false);
             $entityManager->persist($subdomain);
             $entityManager->flush();
 
@@ -38,9 +39,17 @@ final class SubdomainController extends AbstractController
         }
 
         return $this->render('Subdomain/addSubdomain.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView(), 'title' => 'Añadir subdominio'
         ]);
     }
 
-
+    public function listSubdomain(Request $request, EntityManagerInterface $entityManager,  Security $security): Response
+    {
+        $subdomainData =  $entityManager->getRepository(Subdomain::class)->findBy(['user' => $security->getUser()]);
+        
+        return $this->render('Subdomain/listSubdomain.html.twig', [
+            'title' => 'Subdominios creados',
+            'data' => $subdomainData
+        ]);
+    }
 }

@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+ 
+<section class="relative isolate overflow-hidden bg-white px-6 lg:px-8 mb-12">
+    <div class="mx-auto max-w-3x2 lg:max-w-6xl">
+        <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-l text-white uppercase bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Nombre
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Fecha de creación
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Estado
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Acciones
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Notas
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for li in data %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ li.name }}
+                        </th>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ li.createdAt|date }}
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ 0 == li.IsActive ? 'Inactivo' : 'Activo' }}
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <a href="{{ path('front.v1.add.record.to.subdomain',{'idSubdominio':  li.id }) }}"> Editar registros DNS </a>
+                            <a href=" ">Borrar subdominio</a>
+
+                        </td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ li.notes }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+   </div>
+</section>
+ 
+{% endblock %}
+

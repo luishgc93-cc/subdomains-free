@@ -1,22 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Añadir Registro{% endblock %}
-
 {% block body %}
 
 {% for flash_error in app.flashes('verify_email_error') %}
     <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 {% endfor %}
 
-<h1>Añadir registro al subdominio</h1>
-
-{{ form_start(form) }}
-    {{ form_row(form.type) }}
-    {{ form_row(form.value) }}
-    {{ form_row(form.ttl) }}
-    {{ form_row(form.priority) }}
-    <button type="submit" class="btn btn-primary">Crear Registro</button>
-{{ form_end(form) }}
-
+<section class="relative isolate overflow-hidden bg-white px-6 lg:px-8 mb-12">
+    <div class="mx-auto max-w-2xl lg:max-w-4xl">
+    {{ form_start(form) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.value) }}
+        {{ form_row(form.ttl) }}
+        {{ form_row(form.priority) }}
+        <button type="submit" class="text-lg bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Crear Registro</button>
+    {{ form_end(form) }}
+   </div>
+</section>
+ 
 {% endblock %}
 

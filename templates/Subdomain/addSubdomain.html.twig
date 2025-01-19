@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Añadir subdominio{% endblock %}
-
 {% block body %}
-<h1>Añadir Subdomain</h1>
-
-{{ form_start(form) }}
-    {{ form_row(form.domain) }} 
-    {{ form_row(form.name) }}
-    {{ form_row(form.isActive) }}
-    {{ form_row(form.notes) }}
-    <button type="submit" class="btn btn-primary">Añadir</button>
-{{ form_end(form) }}
-
+ 
+<section class="relative isolate overflow-hidden bg-white px-6 lg:px-8 mb-12">
+    <div class="mx-auto max-w-2xl lg:max-w-4xl">
+    {{ form_start(form) }}
+        {{ form_row(form.domain) }} 
+        {{ form_row(form.name) }}
+        {{ form_row(form.notes) }}
+        <button type="submit" class="text-lg bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Añadir</button>
+    {{ form_end(form) }}
+   </div>
+</section>
+ 
 {% endblock %}
 

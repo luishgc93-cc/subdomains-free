@@ -44,6 +44,7 @@ final class RecordsOfSubdomain extends AbstractController
         return $this->render('Subdomain/Records/AddRecord.html.twig', [
             'form' => $form->createView(),
             'subdomain' => $subdomain,
+            'title' => 'Añadir registros DNS'
         ]);
     }
 
