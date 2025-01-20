@@ -2,12 +2,13 @@
 
 {% block body %}
 
-{% for flash_error in app.flashes('verify_email_error') %}
-    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-{% endfor %}
-
 <section class="relative isolate overflow-hidden bg-white px-6 lg:px-8 mb-12">
     <div class="mx-auto max-w-2xl lg:max-w-4xl">
+    {% for message in app.flashes('success') %}
+    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-white" role="alert">
+        <span class="font-medium">{{ message }}</span>  
+    </div>
+    {% endfor %}
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="hidden sm:table-header-group text-l text-white uppercase bg-gray-50 dark:bg-gray-700">
                         <tr>
@@ -39,7 +40,7 @@
                                 </td>                                
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
                                      <a href="#">Borrar</a>
-                                     <a href="#">Editar</a>
+                                     <a href="{{ path('front.v1.edit.record', {'idSubdominio': app.request.attributes.get('idSubdominio'), 'idRecord':record.id } ) }}">Editar</a>
 
                                 </td>
                             </tr>

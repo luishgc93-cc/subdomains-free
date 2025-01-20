@@ -37,7 +37,7 @@ final class RecordsOfSubdomain extends AbstractController
             $entityManager->persist($record);            
             $entityManager->flush();                    
 
-            $this->addFlash('success', 'Record created successfully.');
+            $this->addFlash('success', 'Registro añadido correctamente.');
 
             return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]); 
         }
@@ -73,15 +73,16 @@ final class RecordsOfSubdomain extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();  
 
-            $this->addFlash('success', 'Record updated successfully.');
+            $this->addFlash('success', 'Registro actualizado correctamente.');
 
-            return $this->redirectToRoute('front.v1.add.records.on.subdomain', ['idSubdominio' => $idSubdominio]);
+            return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]);
         }
 
         return $this->render('Subdomain/Records/editRecord.html.twig', [
             'form' => $form->createView(),
             'subdomain' => $subdomain,
             'record' => $record,
+            'title' => 'Editar registro'
         ]);
     }
     

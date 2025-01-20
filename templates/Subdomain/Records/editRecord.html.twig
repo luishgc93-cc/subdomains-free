@@ -6,17 +6,21 @@
     <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 {% endfor %}
 
-<h1>Editar Registro para el subdominio: {{ subdomain.name }}</h1>
+<section class="relative isolate overflow-hidden bg-white px-6 lg:px-8 mb-12">
+    <div class="mx-auto max-w-2xl lg:max-w-4xl">
 
 {{ form_start(form) }}
+    {{ form_row(form.name) }}
     {{ form_row(form.type) }}
     {{ form_row(form.value) }}
     {{ form_row(form.ttl) }}
     {{ form_row(form.priority) }}
-    <button type="submit" class="btn btn-primary">Actualizar registro</button>
+    <button type="submit" class="text-lg bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Actualizar registro</button>
+
 {{ form_end(form) }}
 
-<a href=" " class="btn btn-secondary">Ver todos los registros</a>
+   </div>
+</section>
 
 {% endblock %}
 

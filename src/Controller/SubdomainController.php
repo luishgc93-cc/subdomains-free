@@ -33,7 +33,7 @@ final class SubdomainController extends AbstractController
             $entityManager->persist($subdomain);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Subdomain created successfully.');
+            $this->addFlash('success', 'Subdominio creado correctamente.');
 
             return $this->redirectToRoute('subdomain_list');
         }
