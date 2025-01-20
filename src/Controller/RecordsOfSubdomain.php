@@ -21,6 +21,7 @@ final class RecordsOfSubdomain extends AbstractController
     {
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
         $subdomain =  $entityManager->getRepository(Subdomain::class)->find($idSubdominio);
+        $allRecordsData =  $entityManager->getRepository(SubdomainRecord::class)->findBy(['subdomain' => $idSubdominio]);
 
         if (!$subdomain) {
             throw $this->createNotFoundException('Subdomain not found');
@@ -41,10 +42,11 @@ final class RecordsOfSubdomain extends AbstractController
             return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]); 
         }
 
-        return $this->render('Subdomain/Records/AddRecord.html.twig', [
+        return $this->render('Subdomain/Records/addRecord.html.twig', [
             'form' => $form->createView(),
             'subdomain' => $subdomain,
-            'title' => 'Añadir registros DNS'
+            'title' => 'Añadir registros DNS',
+            'allRecords' => $allRecordsData
         ]);
     }
 

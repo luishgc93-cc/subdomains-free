@@ -8,7 +8,47 @@
 
 <section class="relative isolate overflow-hidden bg-white px-6 lg:px-8 mb-12">
     <div class="mx-auto max-w-2xl lg:max-w-4xl">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="hidden sm:table-header-group text-l text-white uppercase bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Nombre</th>
+                            <th scope="col" class="px-6 py-3">Tipo</th>
+                            <th scope="col" class="px-6 py-3">Valor</th>
+                            <th scope="col" class="px-6 py-3">Ttl</th>
+                             <th scope="col" class="px-6 py-3">Prioridad</th> 
+                            <th scope="col" class="px-6 py-3">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in allRecords %}
+                             <tr class="block sm:table-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
+                                     <span class="sm:hidden font-bold">Nombre:</span>  {{ record.name }} 
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
+                                     <span class="sm:hidden font-bold">Tipo:</span>  {{ record.type }} 
+                                </th>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
+                                    <span class="sm:hidden font-bold">Valor:</span> {{ record.value }}
+                                </td>
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
+                                   <span class="sm:hidden font-bold">Ttl:</span> {{ record.ttl }}
+                                </td>                                
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
+                                    <span class="sm:hidden font-bold">Prioridad:</span> {{ record.priority }}
+                                </td>                                
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
+                                     <a href="#">Borrar</a>
+                                     <a href="#">Editar</a>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
     {{ form_start(form) }}
+        {{ form_row(form.name) }}
         {{ form_row(form.type) }}
         {{ form_row(form.value) }}
         {{ form_row(form.ttl) }}

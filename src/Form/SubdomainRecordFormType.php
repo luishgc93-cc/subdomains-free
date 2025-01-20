@@ -15,6 +15,15 @@ class SubdomainRecordFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        ->add('name', TextType::class, [
+            'label' => 'Nombre',
+            'row_attr' => ['class' => 'mb-5'],
+            'attr' => [
+                'class' => 'text-lg bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                'maxlength' => 250,
+                'placeholder' => 'Introduce un nombre',
+            ],
+        ])
         ->add('type', ChoiceType::class, [
             'label' => 'Tipo',
             'row_attr' => ['class' => 'mb-5'],
@@ -35,7 +44,7 @@ class SubdomainRecordFormType extends AbstractType
             'attr' => [
                 'class' => 'text-lg bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
                 'maxlength' => 500,
-                'placeholder' => 'Introducir un valor',
+                'placeholder' => 'Introduce un valor',
             ],
         ])
         ->add('ttl', IntegerType::class, [
@@ -43,7 +52,7 @@ class SubdomainRecordFormType extends AbstractType
             'row_attr' => ['class' => 'mb-5'],
             'attr' => [
                 'class' => 'text-lg bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-                'placeholder' => 'Introducir en segundos',
+                'placeholder' => 'Introduce en segundos',
             ],
         ])
         ->add('priority', IntegerType::class, [
@@ -55,7 +64,6 @@ class SubdomainRecordFormType extends AbstractType
             ],
             'required' => false,
         ]);
-    
     }
 
     public function configureOptions(OptionsResolver $resolver): void
