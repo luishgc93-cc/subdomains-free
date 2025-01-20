@@ -16,6 +16,7 @@ security:
             form_login:
                 login_path: front.v1.user.login.user
                 check_path: front.v1.user.login.user
+                default_target_path: /subdominios 
                 enable_csrf: true
             logout:
                 path: front.v1.user.logout

@@ -40,25 +40,25 @@ final class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation('front.v1.user.very.email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('noreply@serice.com', 's'))
                     ->to((string) $user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('User/Registration/confirmation_email.html.twig')
             );
 
 
-            return $security->login($user, 'form_login', 'main');
+            return $security->login($user, 'debug.security.authenticator.form_login.main', 'main');
         }
 
 
         return $this->render('User/Registration/register.html.twig', [
             'registrationForm' => $form,
+            'title' => 'Registrarse gratuitamente'
         ]);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
     {
         $id = $request->query->get('id');

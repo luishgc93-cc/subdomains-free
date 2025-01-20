@@ -9,3 +9,7 @@ front.v1.user.login.user:
 front.v1.user.logout:
   path: /logout
   controller: App\Controller\LoginControllerController::logout
+
+front.v1.user.very.email:
+  path: /verify/email
+  controller: App\Controller\RegistrationController::verifyUserEmail
