@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\SubdomainRepository;
+use App\Infrastructure\Persistence\Doctrine\Repository\SubdomainRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

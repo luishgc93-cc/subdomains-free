@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Domain;
 use App\Entity\Subdomain;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
