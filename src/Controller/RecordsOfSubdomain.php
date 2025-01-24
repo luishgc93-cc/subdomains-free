@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Subdomain;
 use App\Entity\SubdomainRecord;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,16 +15,20 @@ final class RecordsOfSubdomain extends AbstractController
 {
     private RecordsOfSubdomainRepository $recordsOfSubdomainRepository;
     private SubdomainRepository $subdomainRepository;
+    private Security $security;
 
     public function __construct(
         RecordsOfSubdomainRepository $recordsOfSubdomainRepository, 
-        SubdomainRepository $subdomainRepository)
+        SubdomainRepository $subdomainRepository,
+        Security $security
+        )
     {
         $this->recordsOfSubdomainRepository = $recordsOfSubdomainRepository;
         $this->subdomainRepository = $subdomainRepository;
+        $this->security = $security;
     }
 
-    public function addRecord(Request $request, Security $security): Response
+    public function addRecord(Request $request): Response
     {
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
         $subdomain =  $this->subdomainRepository->find($idSubdominio);
@@ -64,6 +66,12 @@ final class RecordsOfSubdomain extends AbstractController
         $recordId =  (int) $request->attributes->get('idRecord');
 
         $subdomain = $this->recordsOfSubdomainRepository->findOneBy(['subdomain' => $idSubdominio]);
+
+        $checkUserPermissionsForThisAction = $this->security->getUser() === $subdomain->getSubdomain()->getUser();
+        if(!$checkUserPermissionsForThisAction){
+            throw $this->createNotFoundException('Not permissions for this action.');
+        }
+
         $record = $this->recordsOfSubdomainRepository->findOneBy(['id' => $recordId]);
 
         if (!$subdomain) {
@@ -93,11 +101,17 @@ final class RecordsOfSubdomain extends AbstractController
         ]);
     }
 
-    public function deleteRecord(Request $request, Security $security): Response
+    public function deleteRecord(Request $request): Response
     {
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
         $idRecord =  (int) $request->attributes->get('idRecord');
         $record = $this->recordsOfSubdomainRepository->findOneBy(['id' => $idRecord]);
+        
+        $checkUserPermissionsForThisAction = $this->security->getUser() === $record->getSubdomain()->getUser();
+        if(!$checkUserPermissionsForThisAction){
+            throw $this->createNotFoundException('Not permissions for this action.');
+        }
+
         $this->recordsOfSubdomainRepository->remove($record);
         $this->addFlash('success', 'Registro borrado correctamente.');
         return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]);
