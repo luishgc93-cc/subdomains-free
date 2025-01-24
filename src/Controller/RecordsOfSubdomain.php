@@ -10,18 +10,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\SubdomainRecordFormType;
 use Symfony\Bundle\SecurityBundle\Security;
-  
+use App\Infrastructure\Persistence\Doctrine\Repository\RecordsOfSubdomainRepository;
+use App\Infrastructure\Persistence\Doctrine\Repository\SubdomainRepository;
+
 final class RecordsOfSubdomain extends AbstractController
 {
-    public function __construct()
+    private RecordsOfSubdomainRepository $recordsOfSubdomainRepository;
+    private SubdomainRepository $subdomainRepository;
+
+    public function __construct(
+        RecordsOfSubdomainRepository $recordsOfSubdomainRepository, 
+        SubdomainRepository $subdomainRepository)
     {
+        $this->recordsOfSubdomainRepository = $recordsOfSubdomainRepository;
+        $this->subdomainRepository = $subdomainRepository;
     }
 
-    public function addRecord(Request $request, EntityManagerInterface $entityManager,  Security $security): Response
+    public function addRecord(Request $request, Security $security): Response
     {
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
-        $subdomain =  $entityManager->getRepository(Subdomain::class)->find($idSubdominio);
-        $allRecordsData =  $entityManager->getRepository(SubdomainRecord::class)->findBy(['subdomain' => $idSubdominio]);
+        $subdomain =  $this->subdomainRepository->find($idSubdominio);
+        $allRecordsData =  $this->recordsOfSubdomainRepository->findBy(['subdomain' => $idSubdominio]);
 
         if (!$subdomain) {
             throw $this->createNotFoundException('Subdomain not found');
@@ -34,8 +43,7 @@ final class RecordsOfSubdomain extends AbstractController
 
          if ($form->isSubmitted() && $form->isValid()) {
             $record->setSubdomain($subdomain); 
-            $entityManager->persist($record);            
-            $entityManager->flush();                    
+            $this->recordsOfSubdomainRepository->save($record);            
 
             $this->addFlash('success', 'Registro añadido correctamente.');
 
@@ -50,13 +58,13 @@ final class RecordsOfSubdomain extends AbstractController
         ]);
     }
 
-    public function editRecord(Request $request, EntityManagerInterface $em): Response
+    public function editRecord(Request $request, Security $security): Response
     {
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
         $recordId =  (int) $request->attributes->get('idRecord');
 
-        $subdomain = $em->getRepository(Subdomain::class)->find($idSubdominio);
-        $record = $em->getRepository(SubdomainRecord::class)->find($recordId);
+        $subdomain = $this->recordsOfSubdomainRepository->findOneBy(['subdomain' => $idSubdominio]);
+        $record = $this->recordsOfSubdomainRepository->findOneBy(['id' => $recordId]);
 
         if (!$subdomain) {
             throw $this->createNotFoundException('Subdomain not found');
@@ -69,9 +77,8 @@ final class RecordsOfSubdomain extends AbstractController
         $form = $this->createForm(SubdomainRecordFormType::class, $record);
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();  
+            $this->recordsOfSubdomainRepository->save($form->getData());  
 
             $this->addFlash('success', 'Registro actualizado correctamente.');
 
@@ -85,6 +92,17 @@ final class RecordsOfSubdomain extends AbstractController
             'title' => 'Editar registro'
         ]);
     }
+
+    public function deleteRecord(Request $request, Security $security): Response
+    {
+        $idSubdominio =  (int) $request->attributes->get('idSubdominio');
+        $idRecord =  (int) $request->attributes->get('idRecord');
+        $record = $this->recordsOfSubdomainRepository->findOneBy(['id' => $idRecord]);
+        $this->recordsOfSubdomainRepository->remove($record);
+        $this->addFlash('success', 'Registro borrado correctamente.');
+        return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]);
+    }
+
     
 }
 

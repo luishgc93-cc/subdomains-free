@@ -6,4 +6,6 @@ front.v1.edit.record:
   path: /editar-registro/{idSubdominio}/{idRecord}
   controller: App\Controller\RecordsOfSubdomain::editRecord
 
- 
+front.v1.delete.record:
+  path: /borrar-registro/{idSubdominio}/{idRecord}
+  controller: App\Controller\RecordsOfSubdomain::deleteRecord
