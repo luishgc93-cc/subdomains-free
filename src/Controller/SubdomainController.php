@@ -32,11 +32,11 @@ final class SubdomainController extends AbstractController
             $subdomain->setUser($security->getUser());
             $subdomain->setCreatedAt(new \DateTime());
             $subdomain->setIsActive(false);
-            $this->subdomainService->save($subdomain);
+            $result = $this->subdomainService->save($subdomain);
 
-            $this->addFlash('success', 'Subdominio creado correctamente.');
+            $this->addFlash($result ? 'success' : 'error', $result ? 'Subdominio creado correctamente.' : 'Error al crear Subdominio');
 
-            return $this->redirectToRoute('subdomain_list');
+            return $this->redirectToRoute('front.v1.all.subdomain');
         }
 
         return $this->render('Subdomain/addSubdomain.html.twig', [

@@ -31,9 +31,7 @@ final class SubdomainService implements ServiceInterface
             throw new \InvalidArgumentException('Expected instance of Subdomain');
         }
         
-        $this->subdomainRepository->remove($subdomain);            
-
-        return false;
+        return $this->subdomainRepository->remove($subdomain);            
     }
     public function save($subdomain): bool{
 
@@ -41,8 +39,6 @@ final class SubdomainService implements ServiceInterface
             throw new \InvalidArgumentException('Expected instance of Subdomain');
         }
 
-        $this->subdomainRepository->save($subdomain);            
-
-        return false;
+        return $this->subdomainRepository->save($subdomain);            
     }
 }

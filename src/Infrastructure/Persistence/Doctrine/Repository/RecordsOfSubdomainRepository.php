@@ -16,21 +16,32 @@ final class RecordsOfSubdomainRepository extends ServiceEntityRepository
         parent::__construct($registry, SubdomainRecord::class);
     }
     
-	public function save(SubdomainRecord $entity, bool $flush = true): void
+    public function save(SubdomainRecord $entity, bool $flush = true): bool
 	{
-		$this->getEntityManager()->persist($entity);
+		try{
+			$this->getEntityManager()->persist($entity);
 
-		if ($flush) {
-			$this->getEntityManager()->flush();
+			if ($flush) {
+				$this->getEntityManager()->flush();
+			}
+			return true;
+
+		}catch(\Exception $e){
+			return false;
 		}
 	}
 
-    public function remove(SubdomainRecord $entity, bool $flush = true): void
+    public function remove(SubdomainRecord $entity, bool $flush = true): bool
 	{
-		$this->getEntityManager()->remove($entity);
+		try{
+			$this->getEntityManager()->remove($entity);
 
-		if ($flush) {
-			$this->getEntityManager()->flush();
+			if ($flush) {
+				$this->getEntityManager()->flush();
+			}
+			return true;
+		} catch (\Exception $e) {
+			return false;
 		}
 	}
 }

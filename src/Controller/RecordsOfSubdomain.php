@@ -45,9 +45,9 @@ final class RecordsOfSubdomain extends AbstractController
 
          if ($form->isSubmitted() && $form->isValid()) {
             $record->setSubdomain($subdomain); 
-            $this->recordsOfSubdomainService->save($record);            
+            $result = $this->recordsOfSubdomainService->save($record);            
 
-            $this->addFlash('success', 'Registro añadido correctamente.');
+            $this->addFlash($result ? 'success' : 'error', $result ? 'Registro añadido correctamente.' : 'Error creando el registro');
 
             return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]); 
         }
@@ -86,9 +86,9 @@ final class RecordsOfSubdomain extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->recordsOfSubdomainService->save($form->getData());  
+            $result = $this->recordsOfSubdomainService->save($form->getData());  
 
-            $this->addFlash('success', 'Registro actualizado correctamente.');
+            $this->addFlash($result ? 'success' : 'error', $result ? 'Registro actualizado correctamente.' : 'Error actualizando el registro.');
 
             return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]);
         }
@@ -112,8 +112,8 @@ final class RecordsOfSubdomain extends AbstractController
             throw $this->createNotFoundException('Not permissions for this action.');
         }
 
-        $this->recordsOfSubdomainService->remove($record);
-        $this->addFlash('success', 'Registro borrado correctamente.');
+        $result = $this->recordsOfSubdomainService->remove($record);
+        $this->addFlash($result ? 'success' : 'error', $result ? 'Registro borrado correctamente.': 'Error borrando el registro');
         return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]);
     }
 
