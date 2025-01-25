@@ -9,11 +9,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\SubdomainFormType;
 use Symfony\Bundle\SecurityBundle\Security;
-  
+use App\Service\SubdomainService;
+
 final class SubdomainController extends AbstractController
 {
-    public function __construct()
+    private SubdomainService $subdomainService;
+    public function __construct(SubdomainService $subdomainService)
     {
+        $this->subdomainService = $subdomainService;
     }
 
     public function addSubdomain(Request $request, EntityManagerInterface $entityManager,  Security $security): Response
@@ -29,8 +32,7 @@ final class SubdomainController extends AbstractController
             $subdomain->setUser($security->getUser());
             $subdomain->setCreatedAt(new \DateTime());
             $subdomain->setIsActive(false);
-            $entityManager->persist($subdomain);
-            $entityManager->flush();
+            $this->subdomainService->save($subdomain);
 
             $this->addFlash('success', 'Subdominio creado correctamente.');
 
@@ -44,7 +46,7 @@ final class SubdomainController extends AbstractController
 
     public function listSubdomain(Request $request, EntityManagerInterface $entityManager,  Security $security): Response
     {
-        $subdomainData =  $entityManager->getRepository(Subdomain::class)->findBy(['user' => $security->getUser()]);
+        $subdomainData = $this->subdomainService->findBy('user' , $security->getUser());
         
         return $this->render('Subdomain/listSubdomain.html.twig', [
             'title' => 'Subdominios creados',

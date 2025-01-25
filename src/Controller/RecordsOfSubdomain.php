@@ -8,31 +8,31 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\SubdomainRecordFormType;
 use Symfony\Bundle\SecurityBundle\Security;
-use App\Infrastructure\Persistence\Doctrine\Repository\RecordsOfSubdomainRepository;
-use App\Infrastructure\Persistence\Doctrine\Repository\SubdomainRepository;
+use App\Service\RecordsOfSubdomainService;
+use App\Service\SubdomainService;
 
 final class RecordsOfSubdomain extends AbstractController
 {
-    private RecordsOfSubdomainRepository $recordsOfSubdomainRepository;
-    private SubdomainRepository $subdomainRepository;
+    private RecordsOfSubdomainService $recordsOfSubdomainService;
+    private SubdomainService $subdomainService;
     private Security $security;
 
     public function __construct(
-        RecordsOfSubdomainRepository $recordsOfSubdomainRepository, 
-        SubdomainRepository $subdomainRepository,
+        RecordsOfSubdomainService $recordsOfSubdomainService, 
+        SubdomainService $subdomainService,
         Security $security
         )
     {
-        $this->recordsOfSubdomainRepository = $recordsOfSubdomainRepository;
-        $this->subdomainRepository = $subdomainRepository;
+        $this->recordsOfSubdomainService = $recordsOfSubdomainService;
+        $this->subdomainService = $subdomainService;
         $this->security = $security;
     }
 
     public function addRecord(Request $request): Response
     {
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
-        $subdomain =  $this->subdomainRepository->find($idSubdominio);
-        $allRecordsData =  $this->recordsOfSubdomainRepository->findBy(['subdomain' => $idSubdominio]);
+        $subdomain =  $this->subdomainService->findOneBy('domain',$idSubdominio);
+        $allRecordsData =  $this->recordsOfSubdomainService->findBy('subdomain' , $idSubdominio);
 
         if (!$subdomain) {
             throw $this->createNotFoundException('Subdomain not found');
@@ -45,7 +45,7 @@ final class RecordsOfSubdomain extends AbstractController
 
          if ($form->isSubmitted() && $form->isValid()) {
             $record->setSubdomain($subdomain); 
-            $this->recordsOfSubdomainRepository->save($record);            
+            $this->recordsOfSubdomainService->save($record);            
 
             $this->addFlash('success', 'Registro añadido correctamente.');
 
@@ -65,14 +65,14 @@ final class RecordsOfSubdomain extends AbstractController
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
         $recordId =  (int) $request->attributes->get('idRecord');
 
-        $subdomain = $this->recordsOfSubdomainRepository->findOneBy(['subdomain' => $idSubdominio]);
+        $subdomain = $this->recordsOfSubdomainService->findOneBy('subdomain' , $idSubdominio);
 
         $checkUserPermissionsForThisAction = $this->security->getUser() === $subdomain->getSubdomain()->getUser();
         if(!$checkUserPermissionsForThisAction){
             throw $this->createNotFoundException('Not permissions for this action.');
         }
 
-        $record = $this->recordsOfSubdomainRepository->findOneBy(['id' => $recordId]);
+        $record = $this->recordsOfSubdomainService->findOneBy('id', $recordId);
 
         if (!$subdomain) {
             throw $this->createNotFoundException('Subdomain not found');
@@ -86,7 +86,7 @@ final class RecordsOfSubdomain extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->recordsOfSubdomainRepository->save($form->getData());  
+            $this->recordsOfSubdomainService->save($form->getData());  
 
             $this->addFlash('success', 'Registro actualizado correctamente.');
 
@@ -105,14 +105,14 @@ final class RecordsOfSubdomain extends AbstractController
     {
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
         $idRecord =  (int) $request->attributes->get('idRecord');
-        $record = $this->recordsOfSubdomainRepository->findOneBy(['id' => $idRecord]);
+        $record = $this->recordsOfSubdomainService->findOneBy('id',$idRecord);
         
         $checkUserPermissionsForThisAction = $this->security->getUser() === $record->getSubdomain()->getUser();
         if(!$checkUserPermissionsForThisAction){
             throw $this->createNotFoundException('Not permissions for this action.');
         }
 
-        $this->recordsOfSubdomainRepository->remove($record);
+        $this->recordsOfSubdomainService->remove($record);
         $this->addFlash('success', 'Registro borrado correctamente.');
         return $this->redirectToRoute('front.v1.add.record.to.subdomain', ['idSubdominio' => $idSubdominio]);
     }

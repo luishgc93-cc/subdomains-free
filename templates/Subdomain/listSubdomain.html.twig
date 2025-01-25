@@ -20,18 +20,18 @@
                         {% for li in data %}
                             <tr class="block sm:table-row bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
-                                    <span class="sm:hidden font-bold">Nombre:</span> {{ li.name }}
+                                    <span class="sm:hidden font-bold">Nombre:</span> {{ li.name ~ '.' ~ li.getDomain().getName() }} 
                                 </th>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
-                                    <span class="sm:hidden font-bold">Fecha de creación:</span> {{ li.createdAt|date }}
+                                    <span class="sm:hidden font-bold">Fecha de creación:</span> {{ li.createdAt|date('d/m/Y H:i:s') }}
                                 </td>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
                                     <span class="sm:hidden font-bold">Estado:</span> {{ 0 == li.IsActive ? 'Inactivo' : 'Activo' }}
                                 </td>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
                                     <span class="sm:hidden font-bold">Acciones:</span>
-                                    <a href="{{ path('front.v1.add.record.to.subdomain', {'idSubdominio': li.id}) }}">Editar registros DNS</a>
-                                    <a href="#">Borrar subdominio</a>
+                                    <a href="{{ path('front.v1.add.record.to.subdomain', {'idSubdominio': li.id}) }}">Editar DNS</a>
+                                    <a href="#">Editar subdominio</a>
                                 </td>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
                                     <span class="sm:hidden font-bold">Notas:</span> {{ li.notes }}
