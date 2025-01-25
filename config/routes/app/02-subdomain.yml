@@ -6,6 +6,10 @@ front.v1.all.subdomain:
   path: /subdominios
   controller: App\Controller\SubdomainController::listSubdomain
 
-front.v1.edit.records.on.subdomain:
+front.v1.edit.subdomain:
   path: /editar-subdominio/{idSubdominio}
   controller: App\Controller\SubdomainController::editSubdomain
+
+front.v1.delete.subdomain:
+  path: /borrar-subdominio/{idSubdominio}
+  controller: App\Controller\SubdomainController::deleteSubdomain

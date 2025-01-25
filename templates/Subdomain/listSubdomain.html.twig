@@ -50,7 +50,7 @@
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
                                     <span class="sm:hidden font-bold">Acciones:</span>
                                     <a href="{{ path('front.v1.add.record.to.subdomain', {'idSubdominio': li.id}) }}">Editar DNS</a>
-                                    <a href="#">Editar subdominio</a>
+                                    <a href="{{ path('front.v1.edit.subdomain', {'idSubdominio': li.id} ) }}">Editar subdominio</a>
                                 </td>
                                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white block sm:table-cell">
                                     <span class="sm:hidden font-bold">Notas:</span> {{ li.notes }}
