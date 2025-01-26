@@ -31,7 +31,7 @@ final class RecordsOfSubdomain extends AbstractController
     public function addRecord(Request $request): Response
     {
         $idSubdominio =  (int) $request->attributes->get('idSubdominio');
-        $subdomain =  $this->subdomainService->findOneBy('domain',$idSubdominio);
+        $subdomain =  $this->subdomainService->findOneBy('id',$idSubdominio);
         $allRecordsData =  $this->recordsOfSubdomainService->findBy('subdomain' , $idSubdominio);
 
         if (!$subdomain) {
@@ -66,6 +66,10 @@ final class RecordsOfSubdomain extends AbstractController
         $recordId =  (int) $request->attributes->get('idRecord');
 
         $subdomain = $this->recordsOfSubdomainService->findOneBy('subdomain' , $idSubdominio);
+        
+        if (!$subdomain) {
+            throw $this->createNotFoundException('Subdomain not found');
+        }
 
         $checkUserPermissionsForThisAction = $this->security->getUser() === $subdomain->getSubdomain()->getUser();
         if(!$checkUserPermissionsForThisAction){
@@ -73,10 +77,6 @@ final class RecordsOfSubdomain extends AbstractController
         }
 
         $record = $this->recordsOfSubdomainService->findOneBy('id', $recordId);
-
-        if (!$subdomain) {
-            throw $this->createNotFoundException('Subdomain not found');
-        }
 
         if (!$record) {
             throw $this->createNotFoundException('Record not found');

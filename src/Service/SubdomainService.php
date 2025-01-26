@@ -21,7 +21,7 @@ final class SubdomainService implements ServiceInterface
     }
     public function findBy($searchBy, $item): array{
         return $this->subdomainRepository->findBy([$searchBy => $item]);
-    }
+    }   
     public function findOneBy($searchBy, $item): Subdomain{
         return $this->subdomainRepository->findOneBy([$searchBy => $item]);
     }
