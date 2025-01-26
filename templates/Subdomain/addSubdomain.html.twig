@@ -12,14 +12,15 @@
         focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ '/editar-subdominio/' in app.request.getpathInfo() ?  'Editar' : 'Crear'}} subdominio</button>
     {{ form_end(form) }}
-
+    
+{% if '/editar-subdominio/' in app.request.getpathInfo() %}
     <div class="relative overflow-x-auto w-fit">
-        {% if '/editar-subdominio/' in app.request.getpathInfo() %}
         <a href="{{ path('front.v1.delete.subdomain', {'idSubdominio': app.request.attributes.get('idSubdominio')} ) }}" class="text-lg bg-red-50 border border-red-300 text-red-900 text-sm rounded-lg 
             focus:ring-blue-500 focus:border-red-500 block p-2.5 dark:bg-red-700 dark:border-red-600 dark:placeholder-gray-400 
             dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500 mt-4">Borrar</a>
-        {% endif %}
     </div>
+{% endif %}
+
    </div>
 </section>
 {% endblock %}
