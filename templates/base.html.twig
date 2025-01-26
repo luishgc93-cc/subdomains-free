@@ -12,7 +12,11 @@
 <body>
 
 {% block menuHeader %}
-        {% include '/Includes/header.html.twig' %}
+ 
+    {% if '/' != app.request.pathInfo() %}
+            {% include '/Includes/header.html.twig' %}
+    {% endif %}
+
 {% endblock %}
 
 <div id="body">{% block body %}{% endblock %}</div>
