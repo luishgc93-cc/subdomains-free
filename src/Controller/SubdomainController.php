@@ -27,6 +27,13 @@ final class SubdomainController extends AbstractController
 
     public function addSubdomain(Request $request): Response
     {
+        $subdomainData = $this->subdomainService->findBy('user' , $this->security->getUser());
+
+        if(\count($subdomainData) < 1 || (\count($subdomainData) < 3 && !$this->security->getUser()->isPremium()) ){
+            $this->addFlash('error', 'Solo usuarios premium pueden añadir mas de un subdominio. ');
+            return $this->redirectToRoute('front.v1.all.subdomain');
+        }
+
         $subdomain = new Subdomain();
 
         $form = $this->createForm(SubdomainFormType::class, $subdomain);
@@ -97,10 +104,10 @@ final class SubdomainController extends AbstractController
         return $this->redirectToRoute('front.v1.all.subdomain');
     }
 
-    public function listSubdomain(Request $request, EntityManagerInterface $entityManager,  Security $security): Response
+    public function listSubdomain(): Response
     {
-        $subdomainData = $this->subdomainService->findBy('user' , $security->getUser());
-        
+        $subdomainData = $this->subdomainService->findBy('user' , $this->security->getUser());
+
         return $this->render('Subdomain/listSubdomain.html.twig', [
             'title' => 'Subdominios creados',
             'data' => $subdomainData
