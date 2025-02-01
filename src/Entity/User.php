@@ -45,6 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isPremium = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $PinRemovedAccount = null;
+
     public function __construct()
     {
         $this->subdomains = new ArrayCollection();
@@ -171,6 +174,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsPremium(bool $isPremium): static
     {
         $this->isPremium = $isPremium;
+
+        return $this;
+    }
+
+    public function getPinRemovedAccount(): ?string
+    {
+        return $this->PinRemovedAccount;
+    }
+
+    public function setPinRemovedAccount(?string $PinRemovedAccount): static
+    {
+        $this->PinRemovedAccount = $PinRemovedAccount;
 
         return $this;
     }

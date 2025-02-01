@@ -35,11 +35,11 @@
 
               {{ form_row(registrationForm.agreeTerms, { 'attr': {'class': 'hidden-row'} }) }}
  
-            <button type="submit" class="text-lg mt-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Actualizar contraseña.</button>
+            <button type="submit" class="text-lg mt-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Actualizar contraseña</button>
         <div class="relative overflow-x-auto w-fit">
-            <a href=" " class="text-lg bg-red-50 border border-red-300 text-red-900 text-sm rounded-lg 
+            <a href="{{ path('front.v1.user.delete.account') }}" class="text-lg bg-red-50 border border-red-300 text-red-900 text-sm rounded-lg 
             focus:ring-blue-500 focus:border-red-500 block p-2.5 dark:bg-red-700 dark:border-red-600 dark:placeholder-gray-400 
-            dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500 mt-4">Borrar cuenta de usuario.</a>
+            dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500 mt-4">Borrar cuenta de usuario</a>
          </div>
         {{ form_end(registrationForm) }}
     </div>

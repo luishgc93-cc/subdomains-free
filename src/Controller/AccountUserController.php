@@ -44,5 +44,12 @@ final class AccountUserController extends AbstractController
             'title' => 'Modifica tu cuenta de usuario'
         ]);
     }
+    public function deleteAccountUser(){
+  
+        $user = $this->security->getUser();
 
+        return $this->render('User/Account/deleteAccount.html.twig', [
+            'title' => 'Confirmar el borrado de tu cuenta de usuario'
+        ]);
+    }
 }

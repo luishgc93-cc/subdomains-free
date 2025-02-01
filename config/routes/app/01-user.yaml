@@ -17,3 +17,7 @@ front.v1.user.very.email:
 front.v1.user.modify.account:
   path: /cuenta
   controller: App\Controller\AccountUserController::accountUser
+
+front.v1.user.delete.account:
+  path: /borrar-cuenta
+  controller: App\Controller\AccountUserController::deleteAccountUser
