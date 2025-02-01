@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<section class="relative isolate overflow-hidden bg-white px-6 lg:px-8 mb-12">
+    <div class="mx-auto max-w-2xl lg:max-w-4xl">
+
+    {% for message in app.flashes('success') %}
+    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-white" role="alert">
+        <span class="font-medium">{{ message }}</span>  
+    </div>
+    {% endfor %}
+    
+    {% for message in app.flashes('error') %}
+    <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <span class="sr-only">Info</span>
+        <div>
+            <span class="font-medium">{{ message }}</span>
+        </div>
+    </div>
+    {% endfor %}
+
+        {{ form_errors(registrationForm) }}
+
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email, {
+                attr: { readonly: true }
+            }) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Contraseña'
+            }) }}
+
+              {{ form_row(registrationForm.agreeTerms, { 'attr': {'class': 'hidden-row'} }) }}
+ 
+            <button type="submit" class="text-lg mt-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">Actualizar contraseña.</button>
+        <div class="relative overflow-x-auto w-fit">
+            <a href=" " class="text-lg bg-red-50 border border-red-300 text-red-900 text-sm rounded-lg 
+            focus:ring-blue-500 focus:border-red-500 block p-2.5 dark:bg-red-700 dark:border-red-600 dark:placeholder-gray-400 
+            dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500 mt-4">Borrar cuenta de usuario.</a>
+         </div>
+        {{ form_end(registrationForm) }}
+    </div>
+</section>
+ 
+{% endblock %}

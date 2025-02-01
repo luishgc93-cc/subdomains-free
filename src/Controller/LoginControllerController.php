@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class LoginControllerController extends AbstractController
+final class LoginControllerController extends AbstractController
 {
     public function loginUser(AuthenticationUtils $authenticationUtils): Response
     {

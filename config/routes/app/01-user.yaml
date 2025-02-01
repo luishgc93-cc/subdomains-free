@@ -13,3 +13,7 @@ front.v1.user.logout:
 front.v1.user.very.email:
   path: /verify/email
   controller: App\Controller\RegistrationController::verifyUserEmail
+
+front.v1.user.modify.account:
+  path: /cuenta
+  controller: App\Controller\AccountUserController::accountUser
