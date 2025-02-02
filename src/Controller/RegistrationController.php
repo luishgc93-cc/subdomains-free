@@ -43,7 +43,7 @@ final class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('onboarding@resend.dev', 'onboarding@resend.dev'))
                     ->to((string) $user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Confirma su Email')
                     ->htmlTemplate('User/Registration/confirmation_email.html.twig')
             );
 
@@ -93,7 +93,7 @@ final class RegistrationController extends AbstractController
         (new TemplatedEmail())
             ->from(new Address('onboarding@resend.dev', 'onboarding@resend.dev'))
             ->to((string) $user->getEmail())
-            ->subject('Please Confirm your Email')
+            ->subject('Confirma su Email')
             ->htmlTemplate('User/Registration/confirmation_email.html.twig')
         );
 
