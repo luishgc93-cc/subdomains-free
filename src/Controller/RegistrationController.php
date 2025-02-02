@@ -16,15 +16,21 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use App\Service\EmailService;
 
 final class RegistrationController extends AbstractController
 {
     public function __construct(
-        private EmailVerifier $emailVerifier
-        ){
+        private EmailVerifier $emailVerifier,
+        private EmailService $emailService,
+        private Security $security
+        )
+    {
+        $this->emailService = $emailService;
+        $this->security = $security;
     }
 
-    public function registerUser(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function registerUser(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -38,19 +44,10 @@ final class RegistrationController extends AbstractController
             $user->setIsPremium(false);
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->emailService->sendEmailConfirmationAccount($user);
 
-            $this->emailVerifier->sendEmailConfirmation('front.v1.user.very.email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('onboarding@resend.dev', 'onboarding@resend.dev'))
-                    ->to((string) $user->getEmail())
-                    ->subject('Confirma su Email')
-                    ->htmlTemplate('User/Registration/confirmation_email.html.twig')
-            );
-
-
-            return $security->login($user, 'debug.security.authenticator.form_login.main', 'main');
+            return $this->security->login($user, 'debug.security.authenticator.form_login.main', 'main');
         }
-
 
         return $this->render('User/Registration/register.html.twig', [
             'registrationForm' => $form,
@@ -85,17 +82,11 @@ final class RegistrationController extends AbstractController
         return $this->redirectToRoute('front.v1.all.subdomain');
     }
 
-    public function verifyForwardUserEmail(Security $security): Response
+    public function verifyForwardUserEmail(): Response
     {
-        $user =$security->getUser();
+        $user = $this->security->getUser();
 
-        $this->emailVerifier->sendEmailConfirmation('front.v1.user.very.email', $user,
-        (new TemplatedEmail())
-            ->from(new Address('onboarding@resend.dev', 'onboarding@resend.dev'))
-            ->to((string) $user->getEmail())
-            ->subject('Confirma su Email')
-            ->htmlTemplate('User/Registration/confirmation_email.html.twig')
-        );
+        $this->emailService->sendEmailConfirmationAccount($user);
 
         $this->addFlash('success',  'Correo de activación de cuenta reenviado.');
 

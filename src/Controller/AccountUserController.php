@@ -11,11 +11,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class AccountUserController extends AbstractController
 {
-    private Security $security;
-    private UserPasswordHasherInterface $userPasswordHasher;
-    public function __construct(
-        Security $security,
-        UserPasswordHasherInterface $userPasswordHasher,
+        public function __construct(
+        private Security $security,
+        private UserPasswordHasherInterface $userPasswordHasher,
     )
     {
         $this->security = $security;

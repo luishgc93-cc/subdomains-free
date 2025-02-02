@@ -13,14 +13,10 @@ use App\Service\SubdomainService;
 
 final class RecordsOfSubdomain extends AbstractController
 {
-    private RecordsOfSubdomainService $recordsOfSubdomainService;
-    private SubdomainService $subdomainService;
-    private Security $security;
-
-    public function __construct(
-        RecordsOfSubdomainService $recordsOfSubdomainService, 
-        SubdomainService $subdomainService,
-        Security $security
+     public function __construct(
+        private RecordsOfSubdomainService $recordsOfSubdomainService, 
+        private SubdomainService $subdomainService,
+        private Security $security
         )
     {
         $this->recordsOfSubdomainService = $recordsOfSubdomainService;

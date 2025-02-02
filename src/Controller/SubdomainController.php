@@ -13,12 +13,10 @@ use App\Service\SubdomainService;
 
 final class SubdomainController extends AbstractController
 {
-    private SubdomainService $subdomainService;
-    private Security $security;
     public function __construct
     (
-        SubdomainService $subdomainService, 
-        Security $security
+        private SubdomainService $subdomainService, 
+        private Security $security
     )
     {
         $this->subdomainService = $subdomainService;
