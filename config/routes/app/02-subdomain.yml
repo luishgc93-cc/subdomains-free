@@ -1,15 +1,15 @@
 front.v1.add.subdomain:
-  path: /crear-subdominio
+  path: /panel/crear-subdominio
   controller: App\Controller\SubdomainController::addSubdomain
 
 front.v1.all.subdomain:
-  path: /subdominios
+  path: /panel/subdominios
   controller: App\Controller\SubdomainController::listSubdomain
 
 front.v1.edit.subdomain:
-  path: /editar-subdominio/{idSubdominio}
+  path: /panel/editar-subdominio/{idSubdominio}
   controller: App\Controller\SubdomainController::editSubdomain
 
 front.v1.delete.subdomain:
-  path: /borrar-subdominio/{idSubdominio}
+  path: /panel/borrar-subdominio/{idSubdominio}
   controller: App\Controller\SubdomainController::deleteSubdomain

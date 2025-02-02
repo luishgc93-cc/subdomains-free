@@ -16,13 +16,14 @@ security:
             form_login:
                 login_path: front.v1.user.login.user
                 check_path: front.v1.user.login.user
-                default_target_path: /subdominios 
+                default_target_path: /panel/subdominios 
                 enable_csrf: true
             logout:
                 path: front.v1.user.logout
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/cuenta/, roles: ROLE_USER }
+         - { path: ^/panel, roles: ROLE_USER }
+         - { path: ^/verify/email, roles: ROLE_USER }
 
 when@test:
     security:

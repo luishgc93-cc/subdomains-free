@@ -63,13 +63,13 @@ final class RegistrationController extends AbstractController
         $id = $request->query->get('id');
 
         if (null === $id) {
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('front.v1.user.register');
         }
 
         $user = $userRepository->find($id);
 
         if (null === $user) {
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('front.v1.user.register');
         }
 
         try {
@@ -77,11 +77,31 @@ final class RegistrationController extends AbstractController
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('front.v1.add.subdomain');
         }
 
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('front.v1.user.register');
+    }
+
+    public function verifyForwardUserEmail(Security $security): Response
+    {
+        $user =$security->getUser();
+
+        $this->emailVerifier->sendEmailConfirmation('front.v1.user.very.email', $user,
+        (new TemplatedEmail())
+            ->from(new Address('noreply@serice.com', 's'))
+            ->to((string) $user->getEmail())
+            ->subject('Please Confirm your Email')
+            ->htmlTemplate('User/Registration/confirmation_email.html.twig')
+        );
+
+        $this->addFlash('success',  'Correo de activación de cuenta reenviado.');
+
+        return $this->render('User/Registration/veryAccount.html.twig', [
+            'title' => 'Registrarse gratuitamente',
+            'removeButtonResendEmail' => true
+        ]);
     }
 }

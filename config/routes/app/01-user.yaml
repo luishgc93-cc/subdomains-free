@@ -11,13 +11,17 @@ front.v1.user.logout:
   controller: App\Controller\LoginControllerController::logout
 
 front.v1.user.very.email:
-  path: /verify/email
+  path: /panel/verify/email
   controller: App\Controller\RegistrationController::verifyUserEmail
 
+front.v1.user.forward.email.verify:
+  path: /panel/verify/email/forward
+  controller: App\Controller\RegistrationController::verifyForwardUserEmail
+
 front.v1.user.modify.account:
-  path: /cuenta
+  path: /panel/cuenta
   controller: App\Controller\AccountUserController::accountUser
 
 front.v1.user.delete.account:
-  path: /borrar-cuenta
+  path: /panel/borrar-cuenta
   controller: App\Controller\AccountUserController::deleteAccountUser
