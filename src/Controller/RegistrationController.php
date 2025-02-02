@@ -82,7 +82,7 @@ final class RegistrationController extends AbstractController
 
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('front.v1.user.register');
+        return $this->redirectToRoute('front.v1.all.subdomain');
     }
 
     public function verifyForwardUserEmail(Security $security): Response
