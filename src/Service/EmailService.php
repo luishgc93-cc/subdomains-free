@@ -3,8 +3,6 @@
 namespace App\Service;
 
 use Symfony\Component\Mime\Address;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use App\Security\EmailVerifier;
 use App\Entity\User;
