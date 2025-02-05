@@ -15,17 +15,20 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use App\Service\EmailService;
+use App\Service\UserService;
 
 final class RegistrationController extends AbstractController
 {
     public function __construct(
         private EmailVerifier $emailVerifier,
         private EmailService $emailService,
-        private Security $security
+        private Security $security,
+        private UserService $userService
         )
     {
         $this->emailService = $emailService;
         $this->security = $security;
+        $this->userService = $userService;
     }
 
     public function registerUser(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
@@ -40,8 +43,7 @@ final class RegistrationController extends AbstractController
 
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setIsPremium(false);
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->userService->save($user);
             $this->emailService->sendEmailConfirmationAccount($user);
 
             return $this->security->login($user, 'debug.security.authenticator.form_login.main', 'main');
