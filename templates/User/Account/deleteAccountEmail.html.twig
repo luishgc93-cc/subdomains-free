@@ -1,0 +1,12 @@
+<h1>Hola ! Introduzca este PIN para borrar su cuenta</h1>
+
+<p>
+   Por favor confirme el borrado de su cuenta haciendo click en el enlace de abajo. <br><br>
+   <b> PIN: {{ uuid }} </b>  <br><br>
+    <a href="{{ signedUrl|raw }}">Borrar cuenta</a>.
+    Este link expira en {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
+
+<p>
+    !un saludo!
+</p>
