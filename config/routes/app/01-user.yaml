@@ -25,3 +25,7 @@ front.v1.user.modify.account:
 front.v1.user.delete.account:
   path: /panel/borrar-cuenta
   controller: App\Controller\AccountUserController::deleteAccountUser
+
+  front.v1.user.delete.account:
+    path: /panel/borrar-cuenta/confirmar
+    controller: App\Controller\AccountUserController::confirmDeleteAccountUser

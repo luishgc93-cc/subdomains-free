@@ -33,7 +33,7 @@ final class EmailService
                 ->from(new Address('onboarding@resend.dev', 'onboarding@resend.dev'))
                 ->to((string) $user->getEmail())
                 ->subject('PIN de borrado de cuenta')
-                ->htmlTemplate('User/Registration/confirmation_email.html.twig'),
+                ->htmlTemplate('User/Account/deleteAccountEmail.html.twig'),
             $uuid
         );
     }

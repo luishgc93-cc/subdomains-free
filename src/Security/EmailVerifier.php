@@ -53,4 +53,14 @@ class EmailVerifier
         $user->setIsVerified(true);
         $this->userService->save($user);
     }
+
+    /**
+     * @throws VerifyEmailExceptionInterface
+     */
+    public function handleEmailForDeleteAccountUser(Request $request, User $user): void
+    {
+        $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
+        $user->setIsVerified(true);
+        $this->userService->save($user);
+    }
 }
