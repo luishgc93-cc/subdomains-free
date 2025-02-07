@@ -20,7 +20,7 @@ class EmailVerifier
         $this->userService = $userService;
     }
 
-    public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void
+    public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email, string $uuid = ''): void
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
@@ -34,7 +34,12 @@ class EmailVerifier
         $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
         $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
 
-        $email->context($context);
+        if ('' !== $uuid) {
+            $context['uuid'] = $uuid;
+        }
+
+        $email
+            ->context($context);
 
         $this->mailer->send($email);
     }
@@ -43,6 +48,16 @@ class EmailVerifier
      * @throws VerifyEmailExceptionInterface
      */
     public function handleEmailConfirmation(Request $request, User $user): void
+    {
+        $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
+        $user->setIsVerified(true);
+        $this->userService->save($user);
+    }
+
+    /**
+     * @throws VerifyEmailExceptionInterface
+     */
+    public function handleEmailForDeleteAccountUser(Request $request, User $user): void
     {
         $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
         $user->setIsVerified(true);
